@@ -15,17 +15,15 @@ main : Program Value (Result () Article.Model) Article.Msg
 main =
     document
         { init =
-            Maybe.andThen Route.fromUrl
-                >> (\route ->
-                        case route of
-                            Just (Article slug) ->
-                                Ok <|
-                                    \maybeViewer ->
-                                        Article.init (Session.fromViewer MPA maybeViewer) slug
+            \route ->
+                case route of
+                    Just (Article slug) ->
+                        Ok <|
+                            \maybeViewer ->
+                                Article.init (Session.fromViewer MPA maybeViewer) slug
 
-                            _ ->
-                                Err ()
-                   )
+                    _ ->
+                        Err ()
         , subscriptions = Article.subscriptions
         , update = Article.update
         , view =

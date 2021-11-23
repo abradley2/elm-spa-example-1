@@ -19,26 +19,22 @@ main =
     document
         { errorView = always <| view Nothing Other Blank.view
         , init =
-            Maybe.andThen Route.fromUrl
-                >> (\route ->
-                        case route of
-                            Just (Route.EditArticle slug) ->
-                                Ok
-                                    (\maybeViewer ->
-                                        ArticleEditor.initEdit (Session.fromViewer MPA maybeViewer) slug
-                                            |> Tuple.mapFirst (Model (Just slug))
-                                    )
+            \route ->
+                case route of
+                    Just (Route.EditArticle slug) ->
+                        Ok <|
+                            \maybeViewer ->
+                                ArticleEditor.initEdit (Session.fromViewer MPA maybeViewer) slug
+                                    |> Tuple.mapFirst (Model (Just slug))
 
-                            Just Route.NewArticle ->
-                                Ok
-                                    (\maybeViewer ->
-                                        ArticleEditor.initNew (Session.fromViewer MPA maybeViewer)
-                                            |> Tuple.mapFirst (Model Nothing)
-                                    )
+                    Just Route.NewArticle ->
+                        Ok <|
+                            \maybeViewer ->
+                                ArticleEditor.initNew (Session.fromViewer MPA maybeViewer)
+                                    |> Tuple.mapFirst (Model Nothing)
 
-                            _ ->
-                                Err ()
-                   )
+                    _ ->
+                        Err ()
         , subscriptions = \(Model _ model) -> ArticleEditor.subscriptions model
         , update =
             \msg (Model maybeSlug model) ->

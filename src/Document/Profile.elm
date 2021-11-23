@@ -19,21 +19,16 @@ main : Program Value (Result () Model) Profile.Msg
 main =
     document
         { init =
-            Maybe.andThen Route.fromUrl
-                >> Maybe.andThen
-                    (\route ->
-                        case route of
-                            Route.Profile username ->
-                                Just
-                                    (\maybeViewer ->
-                                        Profile.init (Session.fromViewer MPA maybeViewer) username
-                                            |> Tuple.mapFirst (Model username)
-                                    )
+            \route ->
+                case route of
+                    Just (Route.Profile username) ->
+                        Ok <|
+                            \maybeViewer ->
+                                Profile.init (Session.fromViewer MPA maybeViewer) username
+                                    |> Tuple.mapFirst (Model username)
 
-                            _ ->
-                                Nothing
-                    )
-                >> Result.fromMaybe ()
+                    _ ->
+                        Err ()
         , subscriptions = \(Model _ model) -> Profile.subscriptions model
         , update = \msg (Model username model) -> Profile.update msg model |> Tuple.mapFirst (Model username)
         , view =
