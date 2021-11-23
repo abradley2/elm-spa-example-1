@@ -1,4 +1,4 @@
-port module Api exposing (Cred, addServerError, application, decodeErrors, delete, get, login, logout, post, put, register, settings, storageDecoder, storeCredWith, username, viewerChanges)
+port module Api exposing (Cred, requestReplaceUrl, addServerError, application, decodeErrors, delete, get, login, logout, post, put, register, settings, storageDecoder, storeCredWith, username, viewerChanges)
 
 {-| This module is responsible for communicating to the Conduit API.
 
@@ -79,6 +79,9 @@ decode decoder value =
 
 
 port onStoreChange : (Value -> msg) -> Sub msg
+
+
+port requestReplaceUrl : String -> Cmd msg
 
 
 viewerChanges : (Maybe viewer -> msg) -> Decoder (Cred -> viewer) -> Sub msg

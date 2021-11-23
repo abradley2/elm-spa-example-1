@@ -1,5 +1,6 @@
 module Route exposing (Route(..), fromUrl, href, replaceUrl)
 
+import Api exposing (requestReplaceUrl)
 import Article.Slug as Slug exposing (Slug)
 import Browser.Navigation as Nav
 import Html exposing (Attribute)
@@ -59,7 +60,7 @@ replaceUrl key route =
             Nav.replaceUrl k (routeToString route)
 
         _ ->
-            Nav.load (routeToString route)
+            requestReplaceUrl (routeToString route)
 
 
 fromUrl : Url -> Maybe Route

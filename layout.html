@@ -22,6 +22,7 @@
   </head>
   <body>
     <script>
+    window.initApp = function () {
       var storageKey = "store";
       var flags = localStorage.getItem(storageKey);
       try {
@@ -43,12 +44,20 @@
         setTimeout(function() { app.ports.onStoreChange.send(val); }, 0);
       });
 
+      app.ports.requestReplaceUrl.subscribe(function(url) {
+        window.history.replaceState(null, document.title, url);
+        window.location.reload();
+      })
+
       // Whenever localStorage changes in another tab, report it if necessary.
       window.addEventListener("storage", function(event) {
         if (event.storageArea === localStorage && event.key === storageKey) {
           app.ports.onStoreChange.send(event.newValue);
         }
       }, false);
+    }
+
+    window.initApp();
     </script>
   </body>
 </html>
