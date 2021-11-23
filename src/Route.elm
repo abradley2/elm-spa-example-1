@@ -5,6 +5,7 @@ import Browser.Navigation as Nav
 import Html exposing (Attribute)
 import Html.Attributes as Attr
 import Profile exposing (Profile)
+import Session exposing (NavKey(..))
 import Url exposing (Url)
 import Url.Parser as Parser exposing ((</>), Parser, oneOf, s, string)
 import Username exposing (Username)
@@ -51,9 +52,14 @@ href targetRoute =
     Attr.href (routeToString targetRoute)
 
 
-replaceUrl : Nav.Key -> Route -> Cmd msg
+replaceUrl : NavKey -> Route -> Cmd msg
 replaceUrl key route =
-    Nav.replaceUrl key (routeToString route)
+    case key of
+        SPA k ->
+            Nav.replaceUrl k (routeToString route)
+
+        _ ->
+            Nav.load (routeToString route)
 
 
 fromUrl : Url -> Maybe Route

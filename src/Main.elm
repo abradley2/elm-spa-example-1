@@ -53,7 +53,7 @@ type Model
 init : Maybe Viewer -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init maybeViewer url navKey =
     changeRouteTo (Route.fromUrl url)
-        (Redirect (Session.fromViewer navKey maybeViewer))
+        (Redirect (Session.fromViewer (Session.SPA navKey) maybeViewer))
 
 
 
@@ -210,22 +210,14 @@ update msg model =
         ( ClickedLink urlRequest, _ ) ->
             case urlRequest of
                 Browser.Internal url ->
-                    case url.fragment of
-                        Nothing ->
-                            -- If we got a link that didn't include a fragment,
-                            -- it's from one of those (href "") attributes that
-                            -- we have to include to make the RealWorld CSS work.
-                            --
-                            -- In an application doing path routing instead of
-                            -- fragment-based routing, this entire
-                            -- `case url.fragment of` expression this comment
-                            -- is inside would be unnecessary.
-                            ( model, Cmd.none )
-
-                        Just _ ->
+                    case ( url.fragment, Session.navKey (toSession model) ) of
+                        ( Just _, Session.SPA key ) ->
                             ( model
-                            , Nav.pushUrl (Session.navKey (toSession model)) (Url.toString url)
+                            , Nav.pushUrl key (Url.toString url)
                             )
+
+                        _ ->
+                            ( model, Cmd.none )
 
                 Browser.External href ->
                     ( model

@@ -1,4 +1,4 @@
-module Session exposing (Session, changes, cred, fromViewer, navKey, viewer)
+module Session exposing (Session, changes, cred, fromViewer, navKey, viewer, NavKey(..))
 
 import Api exposing (Cred)
 import Avatar exposing (Avatar)
@@ -13,11 +13,13 @@ import Viewer exposing (Viewer)
 
 
 -- TYPES
-
+type NavKey
+    = SPA Nav.Key
+    | MPA
 
 type Session
-    = LoggedIn Nav.Key Viewer
-    | Guest Nav.Key
+    = LoggedIn NavKey Viewer
+    | Guest NavKey
 
 
 
@@ -44,7 +46,7 @@ cred session =
             Nothing
 
 
-navKey : Session -> Nav.Key
+navKey : Session -> NavKey
 navKey session =
     case session of
         LoggedIn key _ ->
@@ -58,12 +60,12 @@ navKey session =
 -- CHANGES
 
 
-changes : (Session -> msg) -> Nav.Key -> Sub msg
+changes : (Session -> msg) -> NavKey -> Sub msg
 changes toMsg key =
     Api.viewerChanges (\maybeViewer -> toMsg (fromViewer key maybeViewer)) Viewer.decoder
 
 
-fromViewer : Nav.Key -> Maybe Viewer -> Session
+fromViewer : NavKey -> Maybe Viewer -> Session
 fromViewer key maybeViewer =
     -- It's stored in localStorage as a JSON String;
     -- first decode the Value as a String, then
