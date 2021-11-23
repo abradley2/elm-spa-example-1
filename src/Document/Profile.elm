@@ -9,7 +9,6 @@ import Platform exposing (Program)
 import Route exposing (Route(..))
 import Session exposing (NavKey(..))
 import Username exposing (Username)
-import Viewer
 
 
 type Model
@@ -18,7 +17,7 @@ type Model
 
 main : Program Value (Result () Model) Profile.Msg
 main =
-    document Viewer.decoder
+    document
         { init =
             Maybe.andThen Route.fromUrl
                 >> Maybe.andThen

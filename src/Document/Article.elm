@@ -9,13 +9,11 @@ import Page.NotFound as NotFound
 import Platform exposing (Program)
 import Route exposing (Route(..))
 import Session exposing (NavKey(..))
-import Viewer
 
 
 main : Program Value (Result () Article.Model) Article.Msg
 main =
     document
-        Viewer.decoder
         { init =
             Maybe.andThen Route.fromUrl
                 >> (\route ->

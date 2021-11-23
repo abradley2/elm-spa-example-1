@@ -8,7 +8,6 @@ import Page.Article.Editor as ArticleEditor
 import Page.Blank as Blank
 import Route exposing (Route(..))
 import Session exposing (NavKey(..))
-import Viewer
 
 
 type Model
@@ -18,7 +17,6 @@ type Model
 main : Program Value (Result () Model) ArticleEditor.Msg
 main =
     document
-        Viewer.decoder
         { errorView = always <| view Nothing Other Blank.view
         , init =
             Maybe.andThen Route.fromUrl

@@ -7,12 +7,11 @@ import Page.Home as Home
 import Page.Blank as Blank
 import Platform exposing (Program)
 import Session exposing (NavKey(..))
-import Viewer
 
 
 main : Program Value (Result Never Home.Model) Home.Msg
 main =
-    document Viewer.decoder
+    document
         { init = always <| Ok <| Session.fromViewer MPA >> Home.init
         , subscriptions = Home.subscriptions
         , update = Home.update

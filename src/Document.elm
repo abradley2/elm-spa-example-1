@@ -5,26 +5,24 @@ import Browser
 import Json.Decode as Decode exposing (Decoder, Value)
 import Result.Extra as ResultX
 import Url exposing (Url)
-import Viewer
+import Viewer exposing (Viewer)
 
 
 document :
-    Decoder (Cred -> viewer)
-    ->
-        { init : Maybe Url -> Result initError (Maybe viewer -> ( model, Cmd msg ))
-        , subscriptions : model -> Sub msg
-        , update : msg -> model -> ( model, Cmd msg )
-        , view : model -> Browser.Document msg
-        , errorView : initError -> Browser.Document msg
-        }
+    { init : Maybe Url -> Result initError (Maybe Viewer -> ( model, Cmd msg ))
+    , subscriptions : model -> Sub msg
+    , update : msg -> model -> ( model, Cmd msg )
+    , view : model -> Browser.Document msg
+    , errorView : initError -> Browser.Document msg
+    }
     -> Program Value (Result initError model) msg
-document viewerDecoder config =
+document config =
     let
         init flags =
             let
                 maybeViewer =
                     Decode.decodeValue Decode.string flags
-                        |> Result.andThen (Decode.decodeString (storageDecoder viewerDecoder))
+                        |> Result.andThen (Decode.decodeString (storageDecoder Viewer.decoder))
                         |> Result.toMaybe
 
                 url =
