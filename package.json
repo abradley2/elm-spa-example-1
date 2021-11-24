@@ -1,0 +1,31 @@
+{
+  "name": "elm-spa-example-1",
+  "version": "1.0.0",
+  "description": "👉 I gave [a talk](https://www.youtube.com/watch?v=x1FU3e0sT1I) to explain the principles I used to build this. I highly recommend watching it!",
+  "main": "index.js",
+  "directories": {
+    "test": "tests",
+    "lint": "standard --fix *.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "standard --fix ./server/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abradley2/elm-spa-example-1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abradley2/elm-spa-example-1/issues"
+  },
+  "homepage": "https://github.com/abradley2/elm-spa-example-1#readme",
+  "dependencies": {
+    "koa": "^2.13.4",
+    "koa-router": "^10.1.1",
+    "koa-sendfile": "^3.0.0",
+    "mustache": "^4.2.0",
+    "standard": "^16.0.4"
+  }
+}

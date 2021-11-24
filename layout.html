@@ -31,7 +31,7 @@
       } catch (err) {
         flags = JSON.stringify({ url: window.location.href })
       }
-      var app = Elm.Main.init({flags: flags});
+      var app = window.Elm.Document.{{bundle}}.init({flags: flags});
 
       app.ports.storeCache.subscribe(function(val) {
         if (val === null) {

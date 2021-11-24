@@ -7,3 +7,5 @@ else
 fi
 
 # gzip -f assets/$1.bundle.js -c > assets/$1.bundle.js.gz
+
+# ./build.sh Article && ./build.sh ArticleEditor && ./build.sh Home && ./build.sh Login && ./build.sh Profile && ./build.sh Register && ./build.sh Settings
